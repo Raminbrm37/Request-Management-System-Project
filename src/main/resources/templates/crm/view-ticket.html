@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> View ticket</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت ارتباط با مشتریان</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/crm}">مشاهده درخواست ها </a></li>
+
+            <li><a th:href="@{/customer}">مدیریت موضوع درخواست </a></li>
+            <li><a th:href="@{/customer}">وضعیت کاربران </a></li>
+
+            <li><a th:href="@{/customer}">پیام ها </a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a th:href="@{/crm/view-ticket/{id}(id=${ticket.id})}">مشخصات درخواست</a></li>
+        <li><a th:href="@{/crm/user-info/{id}/{tid}(id=${ticket.user.id},tid=${ticket.id})}"> مشخصات کاربر</a></li>
+    </ul>
+
+
+    <table  class="table table-bordered" style="text-align: center">
+
+
+    <tr>
+
+        <th>کاربر</th>
+        <td th:text="${ticket.user.username}"></td>
+    </tr>
+    <tr>
+
+        <th>موضوغ</th>
+        <td th:text="${ticket.subject.name}"></td>
+    </tr>
+      <tr>
+
+          <th>توضیحات</th>
+          <td th:text="${ticket.description}"></td>
+    </tr>
+      <tr>
+
+          <th>تاریخ ایجاد</th>
+          <td th:text="${#temporals.format(ticket.createAt,'yyyy-MM-dd')}"></td>
+    </tr>
+      <tr>
+
+          <th>تاریخ اخرین ویرایش</th>
+          <td th:text="${#temporals.format(ticket.updateAt,'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+      <tr>
+
+          <th>مستندات</th>
+          <td><a th:href="@{${ticket.getDocumentPath()}}" th:text="${ticket.document}"></a></td>
+    </tr>
+      <tr>
+
+          <th>وضعیت</th>
+          <td th:text="${ticket.status.name()}"></td>
+    </tr>    <tr>
+
+        <th>پاسخ درخواست </th>
+    <td><a th:if="${ticket.status.equals(ticket.status.UNDER_CONSIDERATION)}"
+           th:href="@{/crm/answered-ticket/{id}(id=${ticket.id})}" th:text="'ارسال پاسخ'"></a></td>
+    </tr>
+
+
+</table>
+</div>
+</body>
+
+</html>

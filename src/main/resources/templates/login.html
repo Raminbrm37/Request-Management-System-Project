@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head><title> Main</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="jumbotron text-center"></div>
+<div class="container" style="text-align: center">
+<p style="color: red" th:if="${!message.isEmpty()}" th:text="${message+' اکانتی با این مشخصات پیدا نشد'}"> </p>
+<p1 style="color: red" th:if="${message2!=null}" th:text="${message+' پسورد اشتباه است '}"> </p1>
+
+    <form class="form-horizontal" th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="username">username:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="username"  name="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="password">password:</label>
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <!--            <div class="col-sm-offset-0 col-sm-20">-->
+            <button type="submit" class="btn btn-primary ">Login</button>
+
+        </div>
+        <div class="form-group">
+            <label>Remember me</label>
+            <input type="checkbox" name="remember-me">
+        </div>
+
+        <a th:href="@{/oauth2/authorization/google}">Login whit Google</a><br>
+        <a th:href="@{/forgot-password}">Forgot password?</a>
+
+
+</form>
+</div>
+</body>
+</html>

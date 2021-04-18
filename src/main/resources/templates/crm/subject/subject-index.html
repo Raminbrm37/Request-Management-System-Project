@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> Subject</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت ارتباط با مشتریان</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li ><a th:href="@{/crm}">مشاهده درخواست ها </a></li>
+
+            <li class="active"><a th:href="@{/crm/subject}">مدیریت موضوع درخواست  </a></li>
+            <li ><a th:href="@{/customer}">وضعیت کاربران </a></li>
+
+            <li ><a th:href="@{/customer}">پیام ها </a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a  th:href="@{/crm/subject}">مدیریت موضوع</a></li>
+
+    </ul>
+    <p style="color: red" th:if="${exception!=null}" th:text="${exception}"></p>
+    <form class="form-inline " th:action="@{/crm/subject/create}" th:object="${subject}"
+          method="post">
+
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{name}" class="form-control" placeholder="نام را وارد کنید">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary mb-2">ایجاد موضوع جدید</button>
+
+
+    </form>
+
+<table class="table table-bordered">
+
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>نام</th>
+        <th> وضعیت فعال بودن </th>
+        <th>تغییر وضعیت فعال بودن </th>
+
+        <th>ویرایش</th>
+
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${subjects==null}">
+        <td class="d-lg-inline-block" th:text="'نتیجه ای یافت نشد '"></td>
+    </tr>
+
+    <tr th:each="subject,stats : ${subjects} " th:if="${subjects}">
+        <td th:text="${stats.index + 1}">1</td>
+        <td th:text="*{subject.name}"></td>
+        <td th:text="*{subject.isActive}"></td>
+        <td><a th:href="@{/crm/subject/change-active-status/{id}(id=${subject.id})}">تغیر وضعیت</a></td>
+        <td><a th:href="@{/crm/subject/edit-name-status/{id}(id=${subject.id})}">ویرایش نام</a></td>
+
+    </tr>
+
+
+    </tbody>
+</table>
+</div>
+</body>
+
+</html>

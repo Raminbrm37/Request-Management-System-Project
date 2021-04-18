@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head><title> Users</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--    <style>-->
+    <!--        .jumbotron {-->
+    <!--            background-color: #f4511e; /* Orange */-->
+    <!--            color: #ffffff;-->
+    <!--        }-->
+    <!--    </style>-->
+</head>
+
+
+<body style="background-color: #eae8e8">
+
+
+<nav class="navbar navbar-inverse bg-primary"  >
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">پنل مدیریت</a>
+
+        </div>
+        <ul class="nav navbar-nav" >
+            <li ><a th:href="@{/admin/advanced-search}">مدیریت کاربران</a></li>
+            <li class="active"><a th:href="@{/role/all}">مدیریت دسترسی </a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span th:text="${session.me.firstName+' '+session.me.lastName} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+            <!--            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
+    <h2>فهرست نقش های موجود در سیستم</h2>
+
+    <div class="col-8">
+        <p><a th:href="@{/role}"> Create Role</a> </p>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>نام</th>
+
+            <th>دسترسی ها</th>
+            <th>ویرایش</th>
+            <th>حذف</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="role,stats : ${roles} " >
+            <td th:text="${stats.index + 1}">1</td>
+            <td><strong th:text="${role.name}"></strong></td>
+<!--            <td><strong th:text="${#strings.listJoin(role.authorities, ',')}"></strong></td>-->
+            <td><span th:text="${role.getAuthorities()}">  </span></td>
+            <td><a th:href="@{/role/edit-role(name=${role.name})}">ویرایش</a></td>
+            <td><a th:href="@{/role/delete-role(name=${role.name})}">حذف</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

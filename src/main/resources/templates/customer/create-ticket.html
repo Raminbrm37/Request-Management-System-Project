@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> Create Ticket</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.css}" >
+    <link rel="stylesheet" th:href="@{/css/font.css}" >
+    <link rel="stylesheet" th:href="@{/font/fontawesome/css/fontawesome.css}" >
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-grid.css}" >
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap-reboot.css}" >
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/test.js}"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+
+
+</head>
+
+
+<body style="background-color: #eae8e8" >
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت درخواست</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/customer}">مشاهده درخواست ها </a></li>
+            <li><a th:href="@{/customer/ticket/create}">ایجاد درخواست  </a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <div>
+        <h1>ایجاد تیکت</h1>
+    </div>
+
+
+    <form  th:action="@{/customer/ticket/create}" th:object="${ticket}"
+          method="post" enctype="multipart/form-data">
+
+
+        <div class="form-group">
+            <label for="authority">موضوع را انتخاب کنید</label>
+            <select class="form-control selectors" th:field="*{subject}" id="authority">
+
+                <option th:each="subject : ${subjects}"
+                        th:value="${subject.id}"
+                        th:text="${subject.name}"></option>
+
+            </select>
+        </div>
+        <div class="form-outline mb-4">
+            <textarea rows="4" type="text" th:field="*{description}" class="form-control" placeholder="توضیحات"></textarea>
+        </div>
+
+        <label class="sr-only">مستندات</label>
+        <div class="btn btn-success btn-block mb-4">
+            <input type="file" name="file" accept="application/pdf,image/jpeg" />
+
+        </div>
+
+        <!--        <input hidden th:field="*{user}" th:value="${session.me}" >-->
+
+        <button type="submit" class="btn btn-primary btn-block mb-4">ایجاد تیکت</button>
+    </form>
+
+
+</div>
+
+
+</body>
+
+</html>

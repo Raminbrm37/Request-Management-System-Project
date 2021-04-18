@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> Edite ticket</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت درخواست</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/customer}">مشاهده درخواست ها </a></li>
+            <li><a th:href="@{/customer/ticket/create}">ایجاد درخواست  </a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li><a   th:href="@{/customer/ticket/update(id=${ticket.id})}">ویرایش درخواست</a></li>
+        <li class="active"><a >ویرایش مستندات</a></li>
+
+    </ul>
+
+
+    <div>
+        <h1>ویرایش </h1>
+    </div>
+            <form class="form-inline " th:action="@{/customer/ticket/update-document}" th:object="${ticket}"
+                  method="post" enctype="multipart/form-data">
+
+
+    <table class="table table-bordered">
+        <tr>
+            <td> مستند فعلی</td>
+            <td> حذف</td>
+            <td>بارگزاری</td>
+            <td>اقدام</td>
+        </tr>
+
+        <tr>
+
+            <td><a th:if="${ticket.document}" th:href="@{${ticket.getDocumentPath()}}" th:text="${ticket.document}"></a>
+            </td>
+            <td>
+                <a th:href="@{/customer/ticket/delete-document(id=${ticket.id})}"> Delete </a>
+            </td>
+            <td th:unless="${ticket.document}">  <input type="file" name="file" accept="application/pdf,image/jpeg" />
+            </td>
+            <td ></td>
+        </tr>
+        <input hidden th:field="*{id}" th:value="*{id}" >
+        <button type="submit" class="btn btn-primary mb-2">ویرایش</button>
+    </table>
+
+
+
+            </form>
+
+</div>
+</body>
+
+</html>

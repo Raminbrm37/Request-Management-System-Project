@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head><title> User Information</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--    <style>-->
+    <!--        .jumbotron {-->
+    <!--            background-color: #f4511e; /* Orange */-->
+    <!--            color: #ffffff;-->
+    <!--        }-->
+    <!--    </style>-->
+</head>
+
+
+<body style="background-color: #eae8e8">
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">AdminPage</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">فهرست کاربران</a></li>
+            <li><a href="#">Page 1</a></li>
+            <li><a href="#">Page 2</a></li>
+            <li><a href="#">Page 3</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+            <!--            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+        </ul>
+    </div>
+</nav>
+<div class="container" >
+    <h2>نمایش مشخصات </h2>
+    <p>The .table-bordered class adds borders to a table:</p>
+    <form th:action="@{/admin/changed-role-user}" th:object="${user}"
+          method="post">
+        <table class="table">
+            <tr>
+                <td>
+                <th>  نام کاربری</th>
+                </td>
+                <td><span th:text="*{username}" th:value="*{username}" th:field="*{username}"></span></td>
+
+            </tr>
+
+
+
+            <tr>
+                <td>
+                <th> نقش</th>
+                </td>
+                <td>
+                    <label >Change Role</label>
+                    <select class="form-control selectors" th:field="*{role}" >
+
+                        <option th:each="role: ${roles}"
+                                th:value="${role.id}"
+
+                                th:text="${role.name}">
+<!--                            <input  type="hidden"  th:value="${role.id}" th:field="*{id}" name="roleId">-->
+                        </option>
+
+                        <!--                                th:text="#{${'selected.label.' + role.name}}"-->
+                    </select>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+
+                </td>
+                <div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <input  type="hidden" th:value="*{id}" th:field="*{id}">
+
+
+                </div>
+            </tr>
+        </table>
+
+
+    </form>
+
+</div>
+
+
+</body>
+</html>

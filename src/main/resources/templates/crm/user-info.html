@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> User Info</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت ارتباط با مشتریان</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/customer}">مشاهده درخواست ها </a></li>
+
+            <li><a th:href="@{/crm/subject}">مدیریت موضوع درخواست </a></li>
+            <li><a th:href="@{/customer}">وضعیت کاربران </a></li>
+
+            <li><a th:href="@{/customer}">پیام ها </a></li>
+        </ul>
+
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li ><a th:href="@{/crm/view-ticket/{id}(id=${ticketId})}">مشخصات درخواست</a></li>
+        <li class="active"><a > مشخصات کاربر</a></li>
+
+
+    </ul>
+
+
+
+    <table  class="table table-bordered" style="text-align: center">
+
+
+        <tr>
+
+            <th>نام</th>
+
+            <td th:text="${user.firstName}"></td>
+
+        </tr>
+
+        <tr>
+
+            <th>نام خانوادگی</th>
+
+            <td th:text="${user.lastName}"></td>
+        </tr>
+        <tr>
+
+            <th>کدملی</th>
+
+            <td th:text="${user.nationalCode}"></td>
+        </tr>
+        <tr>
+
+            <th>شماره موبایل </th>
+
+            <td th:text="${user.mobileNumber}"></td>
+        </tr>
+        <tr>
+
+            <th>ایمیل</th>
+
+            <td th:text="${user.email}"></td>
+        </tr>
+
+        <tr>
+
+            <th>نام کاربری</th>
+
+
+            <td th:text="${user.username}"></td>
+        </tr>
+
+
+        <tr>
+
+            <th>فعال</th>
+
+            <td th:text="${user.isActive}"></td>
+        </tr>
+        <tr>
+
+            <th>تعداد درخواست در انتظار پاسخ</th>
+
+            <td th:text="${under}"></td>
+        </tr>
+        <tr>
+
+            <th>تعداد درخواست پاسخ داده شده</th>
+
+            <td th:text="${answered}"></td>
+        </tr> <tr>
+
+            <th>تعداد درخواست بسته شده</th>
+
+            <td th:text="${closed}"></td>
+        </tr>
+        <tr>
+
+            <th>تعداد تمامی درخواست ها</th>
+
+            <td th:text="${closed+answered+under}"></td>
+        </tr>
+
+
+    </table>
+    <div>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>

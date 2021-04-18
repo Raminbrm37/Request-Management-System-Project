@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> CRM</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت ارتباط با مشتریان</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/crm}">مشاهده درخواست ها </a></li>
+
+            <li ><a th:href="@{/crm/subject}">مدیریت موضوع درخواست  </a></li>
+            <li ><a th:href="@{/crm/..}">وضعیت کاربران </a></li>
+
+            <li ><a th:href="@{/customer/message}">پیام ها </a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a  th:href="@{/crm}">جستجوی درخواست</a></li>
+        <li><a th:href="@{/crm/request-handler}">درخواست های در انتظار پاسخ</a></li>
+    </ul>
+    <form class="form-inline " th:action="@{/crm/advanced-search-ticket}" th:object="${ticketSearch}"
+          method="get">
+
+        <label class="sr-only" for="inlineFormInputName2">firstName</label>
+        <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" th:field="*{userSearch.firstName}"
+               placeholder="first Name">
+
+        <label class="sr-only">last Name</label>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{userSearch.lastName}" class="form-control" placeholder="last Name">
+        </div>
+
+        <label class="sr-only">Username</label>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{userSearch.username}" class="form-control" placeholder="Username">
+        </div>
+        <label class="sr-only">national Code</label>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{userSearch.nationalCode}" class="form-control" placeholder="nationalCode">
+        </div>
+
+        <label class="sr-only">mobile Number</label>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{userSearch.mobileNumber}" class="form-control" placeholder="mobile Number">
+        </div>
+
+        <label class="sr-only">Email</label>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <input type="text" th:field="*{userSearch.email}" class="form-control" placeholder="Email">
+        </div>
+        <label class="sr-only"> Is Active</label>
+        <div class="input-group mb-2 mr-sm-2">
+            <select th:field="*{userSearch.isActive}">
+                <option th:value="1" style="background-color: green"> Active</option>
+                <option th:value="0" style="background-color: red"> DeActive</option>
+            </select>
+
+        </div>
+
+
+        <div class="input-group mb-2 mr-sm-2">
+            <label>بدون موضوع:</label>
+            <input type="checkbox" th:field="*{subjectNull}" th:value="1">
+
+        </div>
+        <div class="input-group mb-2 mr-sm-2">
+            <label>موضوع:</label>
+            <select class="form-control selectors" th:field="*{subject}" id="authority">
+
+                <option th:each="subject : ${subjects}"
+                        th:value="${subject.name}"
+                        th:text="${subject.name}"></option>
+            </select>
+        </div>
+
+
+        <div class="input-group mb-2 mr-sm-2">
+            <label>بدون وضعیت:</label>
+            <input type="checkbox" th:field="*{statusNull}" th:value="1">
+
+        </div>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <label>وضعیت </label>
+            <select class="form-control selectors" th:field="*{status}">
+
+                <option th:each="status : ${T(ir.maktab.finalproject.model.ticket.Status).values()}"
+                        th:value="${status.name}"
+                        th:text="${status.name}"
+                ></option>
+
+            </select>
+
+        </div>
+        <div class="input-group mb-2 mr-sm-2">
+
+            <label>تاریخ درخواست: </label>
+
+            <input type="date" class="form-control" th:value="*{time}" th:field="*{time}">
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-2">Search</button>
+
+
+    </form>
+
+
+    <nav aria-label="Page navigation example" style="float: right">
+    <ul class="pagination"
+        th:if="${tickets!=null}">
+        <li class="page-item" th:classappend="${tickets.first} ? disabled">
+            <a class="page-link"
+               th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+               th:href="@{${url.replaceQueryParam('page').toUriString()}(page=${tickets.number -1}) }"
+           >قبلی</a></li>
+
+
+        <li class="page-item"
+            th:classappend="${tickets.number == i} ? active"
+            th:each="i : ${#numbers.sequence(0, tickets.totalPages - 1)}"
+
+        ><a class="page-link"
+            th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+            th:href="@{${url.replaceQueryParam('page').toUriString()}(page=${i}) }">[[${i+1}]]</a></li>
+
+        <li class="page-item" th:classappend="${tickets.last} ? disabled">
+            <a class="page-link"
+               th:with="url=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+               th:href="@{${url.replaceQueryParam('page').toUriString()}(page=${tickets.number +1}) }">بعدی</a></li>
+
+    </ul></nav>
+    <table class="table table-bordered" th:if="${tickets!=null}">
+
+    <thead class="thead-dark">
+    <tr>
+        <th>#</th>
+        <th>کاربر</th>
+        <th>موضوغ</th>
+        <th>توضیحات</th>
+        <th>تاریخ ایجاد</th>
+        <th>تاریخ اخرین ویرایش</th>
+
+<!--        <th>مستندات</th>-->
+        <th>وضعیت</th>
+<!--        <th>بستن درخواست</th>-->
+        <th>مشاهده و بررسی</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${tickets==null}">
+        <td class="d-lg-inline-block" th:text="'نتیجه ای یافت نشد '"></td>
+    </tr>
+
+    <tr th:each="tick,stats : ${tickets} " th:if="${tickets}">
+        <td th:text="${stats.index + 1}">1</td>
+        <td th:text="*{tick.user.username}"></td>
+        <td th:text="*{tick.subject.name}"></td>
+        <td th:text="*{tick.description}"></td>
+        <td th:text="*{#temporals.format(tick.createAt,'yyyy-MM-dd')}"></td>
+        <td th:text="*{#temporals.format(tick.updateAt,'yyyy-MM-dd HH:mm')}"></td>
+<!--        <td><a th:href="@{${tick.getDocumentPath()}}" th:text="${tick.document}"></a></td>-->
+        <td th:text="*{tick.status.name()}"></td>
+        <td><a th:href="@{/crm/view-ticket/{id}(id=${tick.id})}">View ticket</a></td>
+<!--        <td><a th:if="*{tick.status.equals(tick.status.HAS_BEEN_ANSWERED)}"-->
+<!--               th:href="@{/customer/ticket/closed-ticket(id=${tick.id})}" th:text="'پایان درخواست'"></a></td>-->
+<!--        <td><a th:if="*{tick.status.equals(tick.status.UNDER_CONSIDERATION)}"-->
+<!--               th:href="@{/customer/ticket/update(id=${tick.id})}" th:text="'Edit'"></a></td>-->
+    </tr>
+
+
+    </tbody>
+</table>
+</div>
+</body>
+
+</html>

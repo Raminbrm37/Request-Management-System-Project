@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> Closed ticket</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت درخواست</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/customer}">مشاهده درخواست ها </a></li>
+            <li><a th:href="@{/customer/ticket/create}">ایجاد درخواست  </a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li ><a  th:href="@{/customer}">تمام درخواست ها</a></li>
+        <li ><a   th:href="@{/customer/ticket/step-one}">درخواست های در انتظار پاسخ</a></li>
+        <li><a  th:href="@{/customer/ticket/step-two}">درخواست های پاسخ داده شده</a></li>
+        <li class="active"><a  th:href="@{/customer/ticket/step-three}">درخواست های بسته شده</a></li>
+        <li ><a th:href="@{/customer/ticket/advanced-search}">جستجو پیشرفته</a></li>
+    </ul>
+
+    <table class="table table-bordered" >
+
+        <thead>
+        <tr>
+
+            <th>#</th>
+            <th>موضوغ</th>
+            <th>توضیحات</th>
+            <th>تاریخ ایجاد</th>
+            <th>تاریخ اخرین ویرایش</th>
+
+            <th>مستندات</th>
+            <th>پاسخ</th>
+<!--            <th>وضعیت</th>-->
+<!--            <th>بستن درخواست</th>-->
+<!--            <th>ویرایش</th>-->
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${tickets.isEmpty()}">
+            <td class="d-lg-inline-block" th:text="'نتیجه ای یافت نشد '"></td>
+        </tr>
+
+        <tr th:each="tick,stats : ${tickets} " th:if="${tickets}">
+            <td th:text="${stats.index + 1}">1</td>
+            <td th:text="*{tick.subject.name}"></td>
+            <td th:text="*{tick.description}"></td>
+            <td th:text="*{#temporals.format(tick.createAt,'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="*{#temporals.format(tick.updateAt,'yyyy-MM-dd HH:mm')}"></td>
+            <td><a th:href="@{${tick.getDocumentPath()}}" th:text="${tick.document}"></a></td>
+            <td th:text="*{tick.response}"></td>
+<!--            <td>  <a th:if="*{tick.status.equals(tick.status.HAS_BEEN_ANSWERED)}" th:href="@{/customer/ticket/closed-ticket(id=${tick.id})}" th:text="'پایان درخواست'" ></a></td>-->
+<!--            <td>  <a th:if="*{tick.status.equals(tick.status.UNDER_CONSIDERATION)}" th:href="@{/customer/ticket/update(id=${tick.id})}" th:text="'Edit'" ></a></td>-->
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+
+</html>

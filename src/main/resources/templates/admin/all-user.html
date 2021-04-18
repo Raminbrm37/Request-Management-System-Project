@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" dir="rtl">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head><title> Users</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!--    <style>-->
+<!--        .jumbotron {-->
+<!--            background-color: #f4511e; /* Orange */-->
+<!--            color: #ffffff;-->
+<!--        }-->
+<!--    </style>-->
+</head>
+
+
+<body style="background-color: #eae8e8">
+
+
+<nav class="navbar navbar-inverse bg-primary"  >
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">پنل مدیریت</a>
+
+        </div>
+        <ul class="nav navbar-nav" >
+            <li class="active"><a th:href="@{/admin/advanced-search}">مدیریت کاربران</a></li>
+            <li><a th:href="@{/role/all}">مدیریت دسترسی </a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span th:text="${session.me.firstName+' '+session.me.lastName} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h2>لیست کاربران</h2>
+
+    <table class="table table-bordered" >
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>نام کاربری</th>
+            <th>نام </th>
+            <th>نام خانوادگی</th>
+            <th>شماره تماس</th>
+            <th>نقش</th>
+            <th>دسترسی ها </th>
+            <th> وضعیت  </th>
+            <th> مشاهده  کامل مشخصات  </th>
+            <th> تغییر رمزعبور  </th>
+            <th> تغییر نقش  </th>
+            <th> وضعیت فعال بودن  </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="user,stats : ${users}">
+            <td th:text="${stats.index + 1}">1</td>
+            <td><span th:text="${user.username}"></span></td>
+            <td><span th:text="${user.firstName}"> </span></td>
+            <td><span th:text="${user.lastName}">  </span></td>
+            <td><span th:text="${user.mobileNumber}">  </span></td>
+            <td><span th:text="${user.role.name}">  </span></td>
+            <td><span th:text="${user.role.getAuthorities()}">  </span></td>
+            <td><span th:text="${user.isActive}">  </span></td>
+            <td><a th:href="@{/admin/show-user(id=${user.id})}">نمایش</a> </td>
+            <td><a th:href="@{/admin/change-password-user(username=${user.username})}">تغییر رمز عبور</a> </td>
+            <td><a th:href="@{/admin/change-role-user(username=${user.username})}">تغییر نقش</a> </td>
+            <td><a th:href="@{/admin/change-status-user(username=${user.username})}">تغییر وضعیت فعالیت</a> </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

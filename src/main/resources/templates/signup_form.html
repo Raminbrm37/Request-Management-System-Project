@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Register</title>
+</head>
+<body>
+<p style="color: red" th:if="${exception!=null}" th:text="${exception}"></p>
+<!--	<span th:unless="${message.isEmpty()}" th:text="${message}">as</span>-->
+<!--	<span th:unless="${message.isEmpty()}" th:object="${message}"></span>-->
+
+<table class="table table-bordered"  >
+
+	<tbody>
+<tr   th:each="error : ${message}  " th:unless="${message.isEmpty()}" >
+<!--	<td><span th:text="${error.getObjectName()}"></span></td>-->
+	<td><span th:text="${error.defaultMessage}"></span></td>
+
+</tr>
+	</tbody>
+</table>
+</p>
+	<div class="container text-center">
+		<div>
+			<h1>User Registration - Sign Up</h1>
+		</div>
+		<form th:action="@{/register/process}" th:object="${user}"
+			method="post" style="max-width: 600px; margin: 0 auto;" enctype="multipart/form-data">
+		<div class="m-3">
+			<div class="form-group row">
+				<label class="col-4 col-form-label">E-mail: </label>
+				<div class="col-8" emc>
+					<input type="email" th:field="*{email}" class="form-control" required />
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-4 col-form-label">Password: </label>
+				<div class="col-8">
+					<input type="password" th:field="*{password}" class="form-control" 
+							required minlength="6" maxlength="10"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">retype Password: </label>
+				<div class="col-8">
+					<input type="password" th:field="*{retypePassword}" class="form-control"
+							required minlength="6" maxlength="10"/>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-4 col-form-label">First Name: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{firstName}" class="form-control" 
+							required minlength="2" maxlength="20"/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-4 col-form-label">Last Name: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{lastName}" class="form-control" 
+							required minlength="2" maxlength="20" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">Username: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{username}" class="form-control"
+							 />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">mobile number: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{mobileNumber}" class="form-control"
+							 />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">national code: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{nationalCode}" class="form-control"
+					/>
+				</div>
+			</div>
+
+			<div>
+				<button type="submit" class="btn btn-primary">Sign Up</button> 
+			</div>
+		</div>
+		</form>
+	</div>
+</body>
+</html>

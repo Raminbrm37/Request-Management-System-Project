@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot Thymeleaf Application - Bootstrap Select Option</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+</head>
+<body>
+<div class="container text-center">
+    <p style="color: red" th:if="${exception!=null}" th:text="${exception}"></p>
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <form th:action="@{/role/created-role}" th:object="${role}"
+                  method="post">
+                <div class="form-group">
+                    <label class="col-4 col-form-label">Role Name </label>
+
+                    <input type="text" th:field="*{name}" class="form-control" required/>
+                </div>
+
+        <!--            <select class="form-control selectpicke" th:field="*{getAuthorities()} mult">-->
+        <!--                <option th:each="authority : ${T(ir.maktab.finalproject.model.entity.Authority).values()}"-->
+        <!--                        th:value="${authority}" th:text="${authority}"></option>-->
+        <!--            </select>-->
+
+    <div class="form-group">
+        <label for="authority">Select Authority</label>
+        <select class="form-control selectors" th:field="*{authorities}" id="authority" multiple>
+
+            <option th:each="authority : ${T(ir.maktab.finalproject.model.entity.Authority).values()}"
+                    th:value="${authority}"
+                    th:text="${authority}"></option>
+
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit form</button>
+    </form>
+</div></div></div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{assets/bootstrap-select-1.13.9/dist/js/bootstrap-select.js}"></script>
+</body>
+</html>

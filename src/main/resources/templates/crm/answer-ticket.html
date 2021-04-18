@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
+
+<head><title> Answer ticket</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+
+
+<body style="background-color: #eae8e8">
+<nav class="navbar navbar-inverse bg-primary">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">مدیریت ارتباط با مشتریان</a>
+
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/crm}">مشاهده درخواست ها </a></li>
+
+            <li><a th:href="@{/customer}">مدیریت موضوع درخواست </a></li>
+            <li><a th:href="@{/customer}">وضعیت کاربران </a></li>
+
+            <li><a th:href="@{/customer}">پیام ها </a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/user/my-profile/{username}(username=${session.me.username})}"> <span
+                    th:text="${session.me.firstName+' '+session.me.lastName+'اطلاعات کاربری'} "></span></a></li>
+            <li><a href="/mylogout"><span class="glyphicon glyphicon-user"></span>خروج</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container text-center">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a th:href="@{/crm/view-ticket/{id}(id=${ticket.id})}">مشخصات درخواست</a></li>
+        <li><a th:href="@{/crm/user-info/{id}/{tid}(id=${ticket.user.id},tid=${ticket.id})}"> مشخصات کاربر</a></li>
+    </ul>
+
+
+    <form class="form-inline " th:action="@{/crm/answered-ticket}" th:object="${ticket}"
+          method="post">
+
+        <div class="input-group mb-2 mr-sm-2">
+
+            <textarea type="text" th:field="*{response}" class="form-control" placeholder="پاسخ درخواست"></textarea>
+        </div>
+        <select class="form-control selectors" th:field="*{status}">
+
+            <option th:each="status : ${T(ir.maktab.finalproject.model.ticket.Status).HAS_BEEN_ANSWERED}"
+                    th:value="${status}"
+                    th:text="${status}"
+            ></option>
+
+        </select>
+
+        <input TYPE="hidden" th:field="*{id}" th:value="${ticket.id}">
+        <input TYPE="hidden" th:field="*{user}" th:value="${ticket.user}">
+        <input TYPE="hidden" th:field="*{subject}" th:value="${ticket.status}">
+        <input TYPE="hidden" th:field="*{document}" th:value="${ticket.document}">
+        <input TYPE="hidden" th:field="*{description}" th:value="${ticket.description}">
+<!--        <input TYPE="hidden" th:field="*{status}" th:value="*{status.HAS_BEEN_ANSWERED}">-->
+        <button type="submit" class="btn btn-primary mb-2">ارسال پاسخ</button>
+
+
+    </form>
+
+</div>
+</body>
+
+</html>
